@@ -1,0 +1,12 @@
+{
+  "name": "sms-spam-dev-klaus",
+  "version": "1.0.0",
+  "description": "Web interface for SMS spam by Dev Klaus",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
