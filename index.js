@@ -23,25 +23,23 @@ app.post('/api/spam', async (req, res) => {
     try {
         for (let i = 0; i < count; i++) {
             try {
-                // On utilise fetch avec un timeout plus long (10s)
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000);
-
+                // Appel avec des headers spécifiques pour éviter le CORS
                 const response = await fetch(`https://prabath-md-pair-web-v2-slk.koyeb.app/code?number=${encodeURIComponent(number)}`, {
-                    signal: controller.signal,
+                    method: 'GET',
                     headers: {
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-                    }
+                        'Accept': 'application/json, text/plain, */*',
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                        'Content-Type': 'text/plain;charset=UTF-8'
+                    },
+                    signal: AbortSignal.timeout(10000) // Timeout de 10 secondes
                 });
 
-                clearTimeout(timeoutId);
-
-                // Si le serveur répond autre chose que 200-299, c'est une erreur
+                // Vérification du statut HTTP
                 if (!response.ok) {
-                    throw new Error(`HTTP Error: ${response.status}`);
+                    throw new Error(`Serveur cible a répondu: ${response.status}`);
                 }
 
-                // On essaie de lire la réponse (même si elle est vide)
+                // On lit la réponse (même si elle est vide)
                 await response.text(); 
                 
                 results.push({ status: 'OK', time: new Date().toISOString() });
@@ -52,7 +50,7 @@ app.post('/api/spam', async (req, res) => {
                 failCount++;
             }
 
-            // Délai entre les envois (800ms pour être plus doux avec le serveur cible)
+            // Délai entre les envois
             if (i < count - 1) {
                 await new Promise(resolve => setTimeout(resolve, 800));
             }
