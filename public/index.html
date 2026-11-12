@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS BRUTEFORCE - DEV KLAUS</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #050505;
+            color: #00ff41; /* Vert hacker */
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            border: 1px solid #00ff41;
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            background: rgba(0, 0, 0, 0.9);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        .ascii-art {
+            font-size: 0.6rem;
+            white-space: pre;
+            color: #00aa30;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .author {
+            color: #fff;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        input {
+            width: 80%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #111;
+            border: 1px solid #333;
+            color: #00ff41;
+            font-family: inherit;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #00ff41;
+            box-shadow: 0 0 5px #00ff41;
+        }
+
+        button {
+            width: 80%;
+            padding: 12px;
+            margin-top: 20px;
+            background: transparent;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        button:hover {
+            background: #00ff41;
+            color: #000;
+            box-shadow: 0 0 15px #00ff41;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #status {
+            margin-top: 20px;
+            min-height: 20px;
+            font-size: 0.9rem;
+        }
+
+        .blink {
+            animation: blinker 1s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Petit ASCII Art simplifié -->
+        <div class="ascii-art">
+█▀▀ █▀█ █▀▄ ▀▀█▀▀
+▄▀█ █▄█ █▄▀ ░░░░░
+        </div>
+
+        <h1>SMS ATTACK</h1>
+        <div class="author">BY DEV KLAUS</div>
+
+        <input type="tel" id="number" placeholder="+33 6 12 34 56 78" required>
+        <br>
+        <input type="number" id="count" placeholder="Quantité" value="10" min="1" max="100">
+        <br>
+        <button id="btn" onclick="launchAttack()">INITIATE BREACH</button>
+        
+        <div id="status"></div>
+    </div>
+
+    <script>
+        async function launchAttack() {
+            const number = document.getElementById('number').value.trim();
+            const count = parseInt(document.getElementById('count').value);
+            const statusDiv = document.getElementById('status');
+            const btn = document.getElementById('btn');
+
+            if (!number || isNaN(count)) {
+                statusDiv.innerText = "> ERREUR: PARAMÈTRES INVALIDES";
+                statusDiv.style.color = "#ff0000";
+                return;
+            }
+
+            // UI Loading state
+            btn.disabled = true;
+            btn.innerText = "ENVOI EN COURS...";
+            statusDiv.innerHTML = "<span class='blink'>>_ CONNECTING TO SERVER...</span>";
+            statusDiv.style.color = "#00ff41";
+
+            try {
+                const response = await fetch('/api/spam', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ number, count })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    statusDiv.innerHTML = `> SUCCÈS: ${data.message}<br>> TARGET LOCKED.`;
+                    statusDiv.style.color = "#00ff41";
+                    btn.innerText = "ATTACK COMPLETE";
+                } else {
+                    statusDiv.innerText = "> ÉCHEC: " + data.error;
+                    statusDiv.style.color = "#ff0000";
+                    btn.innerText = "RETRY";
+                }
+            } catch (err) {
+                statusDiv.innerText = "> CONNEXION PERDUE.";
+                statusDiv.style.color = "#ff0000";
+                btn.innerText = "RETRY";
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
