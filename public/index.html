@@ -3,154 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMS BRUTEFORCE - DEV KLAUS</title>
+    <title>Kizumi Spam - Green Hell</title>
     <style>
+        /* --- STYLE DÉMONIAQUE VERT/NOIR --- */
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
         body {
-            margin: 0;
-            padding: 0;
-            background-color: #050505;
-            color: #00ff41; /* Vert hacker */
-            font-family: 'Courier New', Courier, monospace;
+            background-color: #050505; /* Noir profond */
+            color: #00ff41; /* Vert terminal classique */
+            font-family: 'Share Tech Mono', monospace;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
         }
 
         .container {
-            text-align: center;
-            border: 1px solid #00ff41;
-            padding: 40px;
-            border-radius: 5px;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
-            background: rgba(0, 0, 0, 0.9);
-            max-width: 400px;
             width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            border: 2px solid #00ff41;
+            box-shadow: 0 0 20px #00ff41, inset 0 0 20px rgba(0, 255, 65, 0.2);
+            background: rgba(10, 10, 10, 0.9);
+            position: relative;
+            text-align: center;
         }
 
         h1 {
             font-size: 2rem;
-            margin-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px #00ff41;
-        }
-
-        .ascii-art {
-            font-size: 0.6rem;
-            white-space: pre;
-            color: #00aa30;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .author {
-            color: #fff;
-            font-size: 0.9rem;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41;
             margin-bottom: 30px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
-            display: inline-block;
+            animation: flicker 3s infinite;
         }
 
-        input {
-            width: 80%;
+        label {
+            display: block;
+            margin-bottom: 8px;
+            text-align: left;
+            font-weight: bold;
+            text-shadow: 0 0 5px #00ff41;
+        }
+
+        input[type="text"], 
+        input[type="number"] {
+            width: 100%;
             padding: 12px;
-            margin: 10px 0;
-            background: #111;
-            border: 1px solid #333;
+            margin-bottom: 20px;
+            background-color: #0a0a0a;
+            border: 1px solid #004d13;
             color: #00ff41;
-            font-family: inherit;
-            font-size: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.1rem;
+            box-sizing: border-box;
             outline: none;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 5px #000;
         }
 
         input:focus {
             border-color: #00ff41;
-            box-shadow: 0 0 5px #00ff41;
+            box-shadow: 0 0 15px #00ff41, inset 0 0 5px #00ff41;
         }
 
         button {
-            width: 80%;
-            padding: 12px;
-            margin-top: 20px;
-            background: transparent;
-            border: 1px solid #00ff41;
+            width: 100%;
+            padding: 15px;
+            background-color: #002b0e;
             color: #00ff41;
-            font-family: inherit;
-            font-weight: bold;
-            font-size: 1.1rem;
+            border: 2px solid #00ff41;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: all 0.3s ease;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px #00ff41;
+            position: relative;
+            overflow: hidden;
         }
 
         button:hover {
-            background: #00ff41;
+            background-color: #00ff41;
             color: #000;
-            box-shadow: 0 0 15px #00ff41;
+            box-shadow: 0 0 30px #00ff41;
+            transform: scale(1.02);
         }
 
         button:disabled {
-            opacity: 0.5;
+            background-color: #111;
+            color: #555;
+            border-color: #333;
+            box-shadow: none;
             cursor: not-allowed;
         }
 
         #status {
             margin-top: 20px;
-            min-height: 20px;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+            border-top: 1px dashed #004d13;
+            padding-top: 10px;
+        }
+
+        .log-entry {
             font-size: 0.9rem;
+            margin-bottom: 5px;
+            border-left: 2px solid #00ff41;
+            padding-left: 10px;
+            word-break: break-all;
         }
 
-        .blink {
-            animation: blinker 1s linear infinite;
+        .success { color: #00ff41; text-shadow: 0 0 5px #00ff41; }
+        .error { color: #ff003c; text-shadow: 0 0 5px #ff003c; border-left-color: #ff003c; }
+
+        /* Animation de scintillement pour le titre */
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 22%, 24%, 55% { opacity: 0.5; }
         }
 
-        @keyframes blinker {
-            50% { opacity: 0; }
-        }
+        /* Scrollbar custom */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #00ff41; border-radius: 4px; }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <!-- Petit ASCII Art simplifié -->
-        <div class="ascii-art">
-█▀▀ █▀█ █▀▄ ▀▀█▀▀
-▄▀█ █▄█ █▄▀ ░░░░░
-        </div>
-
-        <h1>SMS ATTACK</h1>
-        <div class="author">BY DEV KLAUS</div>
-
-        <input type="tel" id="number" placeholder="+33 6 12 34 56 78" required>
-        <br>
-        <input type="number" id="count" placeholder="Quantité" value="10" min="1" max="100">
-        <br>
-        <button id="btn" onclick="launchAttack()">INITIATE BREACH</button>
+        <h1>KLAUS TOOL SPAM</h1>
         
+        <label for="number">Numéro (avec indicatif):</label>
+        <input type="text" id="number" placeholder="+33600000000">
+
+        <label for="count">Nombre d'envois:</label>
+        <input type="number" id="count" value="5" min="1" max="50">
+
+        <button id="sendBtn" onclick="startSpam()">LANCER L'ATTAQUE</button>
+
         <div id="status"></div>
     </div>
 
     <script>
-        async function launchAttack() {
+        async function startSpam() {
             const number = document.getElementById('number').value.trim();
             const count = parseInt(document.getElementById('count').value);
             const statusDiv = document.getElementById('status');
-            const btn = document.getElementById('btn');
+            const btn = document.getElementById('sendBtn');
 
-            if (!number || isNaN(count)) {
-                statusDiv.innerText = "> ERREUR: PARAMÈTRES INVALIDES";
-                statusDiv.style.color = "#ff0000";
+            if (!number || !count) {
+                alert("Remplis le numéro et le nombre !");
                 return;
             }
 
-            // UI Loading state
+            // Reset UI
+            statusDiv.innerHTML = '';
             btn.disabled = true;
             btn.innerText = "ENVOI EN COURS...";
-            statusDiv.innerHTML = "<span class='blink'>>_ CONNECTING TO SERVER...</span>";
-            statusDiv.style.color = "#00ff41";
 
             try {
                 const response = await fetch('/api/spam', {
@@ -162,21 +176,32 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    statusDiv.innerHTML = `> SUCCÈS: ${data.message}<br>> TARGET LOCKED.`;
-                    statusDiv.style.color = "#00ff41";
-                    btn.innerText = "ATTACK COMPLETE";
+                    addLog(`Total: ${data.message}`, 'success');
+                    data.details.forEach(log => {
+                        if (log.status === 'OK') {
+                            addLog(`[OK] ${log.time}`, 'success');
+                        } else {
+                            addLog(`[ERR] ${log.error}`, 'error');
+                        }
+                    });
                 } else {
-                    statusDiv.innerText = "> ÉCHEC: " + data.error;
-                    statusDiv.style.color = "#ff0000";
-                    btn.innerText = "RETRY";
+                    addLog(`Erreur serveur: ${data.error}`, 'error');
                 }
             } catch (err) {
-                statusDiv.innerText = "> CONNEXION PERDUE.";
-                statusDiv.style.color = "#ff0000";
-                btn.innerText = "RETRY";
+                addLog(`Connexion perdue: ${err.message}`, 'error');
             } finally {
                 btn.disabled = false;
+                btn.innerText = "LANCER L'ATTAQUE";
             }
+        }
+
+        function addLog(message, type) {
+            const div = document.createElement('div');
+            div.className = `log-entry ${type}`;
+            div.innerText = message;
+            document.getElementById('status').appendChild(div);
+            // Auto-scroll vers le bas
+            document.getElementById('status').scrollTop = document.getElementById('status').scrollHeight;
         }
     </script>
 </body>
